@@ -17,7 +17,7 @@
         <div class="flex items-center justify-between">
           <div class="flex items-center gap-2">
             <component :is="mostRecentIcon" :class="['w-5 h-5', mostRecentIconClass]" />
-            <h2 class="text-base font-semibold text-gray-900 dark:text-gray-100">Announcements</h2>
+            <h2 class="text-base font-semibold text-gray-900 dark:text-gray-100">公告</h2>
             <span class="text-xs text-gray-500 dark:text-gray-400">
               ({{ announcements.length }})
             </span>
@@ -243,11 +243,11 @@ const formatDate = (dateString) => {
   yesterday.setDate(yesterday.getDate() - 1)
 
   if (date.toDateString() === today.toDateString()) {
-    return 'Today'
+    return '今天'
   } else if (date.toDateString() === yesterday.toDateString()) {
-    return 'Yesterday'
+    return '昨天'
   } else {
-    return date.toLocaleDateString('en-US', {
+    return date.toLocaleDateString('zh-CN', {
       weekday: 'long',
       year: 'numeric',
       month: 'long',
@@ -257,7 +257,7 @@ const formatDate = (dateString) => {
 }
 
 const formatTime = (timestamp) => {
-  return new Date(timestamp).toLocaleTimeString('en-US', {
+  return new Date(timestamp).toLocaleTimeString('zh-CN', {
     hour: '2-digit',
     minute: '2-digit',
     hour12: false
@@ -265,7 +265,7 @@ const formatTime = (timestamp) => {
 }
 
 const formatFullTimestamp = (timestamp) => {
-  return new Date(timestamp).toLocaleString('en-US', {
+  return new Date(timestamp).toLocaleString('zh-CN', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',

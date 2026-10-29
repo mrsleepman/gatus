@@ -8,11 +8,11 @@
       class="flex items-center gap-1"
     >
       <ChevronLeft class="h-4 w-4" />
-      Previous
+      上一页
     </Button>
     
     <span class="text-sm text-muted-foreground">
-      Page {{ currentPage }} of {{ maxPages }}
+      第 {{ currentPage }} 页，共 {{ maxPages }} 页
     </span>
     
     <Button
@@ -22,7 +22,7 @@
       @click="nextPage"
       class="flex items-center gap-1"
     >
-      Next
+      下一页
       <ChevronRight class="h-4 w-4" />
     </Button>
   </div>

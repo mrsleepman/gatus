@@ -10,11 +10,11 @@ import (
 )
 
 const (
-	defaultTitle                = "Health Dashboard | Gatus"
-	defaultDescription          = "Gatus is an advanced automated status page that lets you monitor your applications and configure alerts to notify you if there's an issue"
-	defaultHeader               = "Gatus"
-	defaultDashboardHeading     = "Health Dashboard"
-	defaultDashboardSubheading  = "Monitor the health of your endpoints in real-time"
+	defaultTitle                = "WebWatch"
+	defaultDescription          = "自动化状态页，用于监控应用运行状况，并在出现问题时发送告警"
+	defaultHeader               = "WebWatch"
+	defaultDashboardHeading     = "WebWatch"
+	defaultDashboardSubheading  = "实时查看各端点的健康状况"
 	defaultLogo                 = ""
 	defaultLink                 = ""
 	defaultFavicon              = "/favicon.ico"
@@ -23,7 +23,7 @@ const (
 	defaultCustomCSS            = ""
 	defaultSortBy               = "name"
 	defaultFilterBy             = "none"
-	defaultLoginSubtitle        = "System Monitoring Dashboard"
+	defaultLoginSubtitle        = "系统监控面板"
 )
 
 var (

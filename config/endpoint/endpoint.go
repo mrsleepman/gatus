@@ -41,7 +41,7 @@ const (
 	UserAgentHeader = "User-Agent"
 
 	// GatusUserAgent is the default user agent that Gatus uses to send requests.
-	GatusUserAgent = "Gatus/1.0"
+	GatusUserAgent = "StatusPage/1.0"
 
 	TypeDNS      Type = "DNS"
 	TypeTCP      Type = "TCP"

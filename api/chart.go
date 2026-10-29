@@ -63,7 +63,7 @@ func ResponseTimeChart(c *fiber.Ctx) error {
 		return c.Status(204).SendString("")
 	}
 	series := chart.TimeSeries{
-		Name: "Average response time per hour",
+		Name: "每小时平均响应时间",
 		Style: chart.Style{
 			StrokeWidth: 1.5,
 			DotWidth:    2.0,
@@ -104,7 +104,7 @@ func ResponseTimeChart(c *fiber.Ctx) error {
 			NameStyle:      axisStyle,
 		},
 		YAxis: chart.YAxis{
-			Name:           "Average response time",
+			Name:           "平均响应时间",
 			GridMajorStyle: gridStyle,
 			GridMinorStyle: gridStyle,
 			Style:          axisStyle,

@@ -16,6 +16,7 @@ import { Line } from 'vue-chartjs'
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler, TimeScale } from 'chart.js'
 import annotationPlugin from 'chartjs-plugin-annotation'
 import 'chartjs-adapter-date-fns'
+import { zhCN } from 'date-fns/locale'
 import { generatePrettyTimeDifference } from '@/utils/time'
 import Loading from './Loading.vue'
 
@@ -207,7 +208,7 @@ const chartOptions = computed(() => {
             },
             label: {
               display: () => hoveredEventIndex.value === index,
-              content: [event.isOngoing ? `Status: ONGOING` : `Status: RESOLVED`, `Unhealthy for ${event.duration}`, `Started at ${new Date(event.timestamp).toLocaleString()}`],
+              content: [event.isOngoing ? '状态：持续中' : '状态：已恢复', `异常持续 ${event.duration}`, `开始于 ${new Date(event.timestamp).toLocaleString('zh-CN')}`],
               backgroundColor: getEventColor(),
               color: '#ffffff',
               font: {
@@ -224,11 +225,16 @@ const chartOptions = computed(() => {
     scales: {
       x: {
         type: 'time',
+        adapters: {
+          date: {
+            locale: zhCN
+          }
+        },
         time: {
           unit: props.duration === '24h' ? 'hour' : props.duration === '7d' ? 'day' : 'day',
           displayFormats: {
-            hour: 'MMM d, ha',
-            day: 'MMM d'
+            hour: 'M月d日 H时',
+            day: 'M月d日'
           }
         },
         grid: {
@@ -268,11 +274,11 @@ const fetchData = async () => {
       timestamps.value = data.timestamps || []
       values.value = data.values || []
     } else {
-      error.value = 'Failed to load chart data'
+      error.value = '图表数据加载失败'
       console.error('[ResponseTimeChart] Error:', await response.text())
     }
   } catch (err) {
-    error.value = 'Failed to load chart data'
+    error.value = '图表数据加载失败'
     console.error('[ResponseTimeChart] Error:', err)
   } finally {
     loading.value = false

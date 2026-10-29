@@ -6,22 +6,22 @@
 export const generatePrettyTimeAgo = (timestamp) => {
   let differenceInMs = new Date().getTime() - new Date(timestamp).getTime();
   if (differenceInMs < 500) {
-    return "now";
+    return "刚刚";
   }
-  if (differenceInMs > 3 * 86400000) { // If it was more than 3 days ago, we'll display the number of days ago
+  if (differenceInMs > 3 * 86400000) {
     let days = (differenceInMs / 86400000).toFixed(0);
-    return days + " day" + (days !== "1" ? "s" : "") + " ago";
+    return days + "天前";
   }
-  if (differenceInMs > 3600000) { // If it was more than 1h ago, display the number of hours ago
+  if (differenceInMs > 3600000) {
     let hours = (differenceInMs / 3600000).toFixed(0);
-    return hours + " hour" + (hours !== "1" ? "s" : "") + " ago";
+    return hours + "小时前";
   }
   if (differenceInMs > 60000) {
     let minutes = (differenceInMs / 60000).toFixed(0);
-    return minutes + " minute" + (minutes !== "1" ? "s" : "") + " ago";
+    return minutes + "分钟前";
   }
   let seconds = (differenceInMs / 1000).toFixed(0);
-  return seconds + " second" + (seconds !== "1" ? "s" : "") + " ago";
+  return seconds + "秒前";
 }
 
 /**
@@ -38,20 +38,20 @@ export const generatePrettyTimeDifference = (start, end) => {
 
   if (hours > 0) {
     const remainingMinutes = minutes % 60
-    const hoursText = hours + (hours === 1 ? ' hour' : ' hours')
+    const hoursText = hours + '小时'
     if (remainingMinutes > 0) {
-      return hoursText + ' ' + remainingMinutes + (remainingMinutes === 1 ? ' minute' : ' minutes')
+      return hoursText + remainingMinutes + '分钟'
     }
     return hoursText
   } else if (minutes > 0) {
     const remainingSeconds = seconds % 60
-    const minutesText = minutes + (minutes === 1 ? ' minute' : ' minutes')
+    const minutesText = minutes + '分钟'
     if (remainingSeconds > 0) {
-      return minutesText + ' ' + remainingSeconds + (remainingSeconds === 1 ? ' second' : ' seconds')
+      return minutesText + remainingSeconds + '秒'
     }
     return minutesText
   } else {
-    return seconds + (seconds === 1 ? ' second' : ' seconds')
+    return seconds + '秒'
   }
 }
 

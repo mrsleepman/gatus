@@ -4,7 +4,7 @@
       <div class="mb-6">
         <Button variant="ghost" class="mb-4" @click="goBack">
           <ArrowLeft class="h-4 w-4 mr-2" />
-          Back to Dashboard
+          返回仪表盘
         </Button>
         
         <div v-if="endpointStatus && endpointStatus.name" class="space-y-6">
@@ -12,7 +12,7 @@
             <div>
               <h1 class="text-4xl font-bold tracking-tight">{{ endpointStatus.name }}</h1>
               <div class="flex items-center gap-3 text-muted-foreground mt-2">
-                <span v-if="endpointStatus.group">Group: {{ endpointStatus.group }}</span>
+                <span v-if="endpointStatus.group">分组：{{ endpointStatus.group }}</span>
                 <span v-if="endpointStatus.group && hostname">•</span>
                 <span v-if="hostname">{{ hostname }}</span>
               </div>
@@ -23,16 +23,16 @@
           <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             <Card>
               <CardHeader class="pb-2">
-                <CardTitle class="text-sm font-medium text-muted-foreground">Current Status</CardTitle>
+                <CardTitle class="text-sm font-medium text-muted-foreground">当前状态</CardTitle>
               </CardHeader>
               <CardContent>
-                <div class="text-2xl font-bold">{{ currentHealthStatus === 'healthy' ? 'Operational' : 'Issues Detected' }}</div>
+                <div class="text-2xl font-bold">{{ currentHealthStatus === 'healthy' ? '运行正常' : '发现问题' }}</div>
               </CardContent>
             </Card>
 
             <Card>
               <CardHeader class="pb-2">
-                <CardTitle class="text-sm font-medium text-muted-foreground">Avg Response Time</CardTitle>
+                <CardTitle class="text-sm font-medium text-muted-foreground">平均响应时间</CardTitle>
               </CardHeader>
               <CardContent>
                 <div class="text-2xl font-bold">{{ pageAverageResponseTime }}</div>
@@ -41,7 +41,7 @@
 
             <Card>
               <CardHeader class="pb-2">
-                <CardTitle class="text-sm font-medium text-muted-foreground">Response Time Range</CardTitle>
+                <CardTitle class="text-sm font-medium text-muted-foreground">响应时间范围</CardTitle>
               </CardHeader>
               <CardContent>
                 <div class="text-2xl font-bold">{{ pageResponseTimeRange }}</div>
@@ -50,7 +50,7 @@
 
             <Card>
               <CardHeader class="pb-2">
-                <CardTitle class="text-sm font-medium text-muted-foreground">Last Check</CardTitle>
+                <CardTitle class="text-sm font-medium text-muted-foreground">最近检查</CardTitle>
               </CardHeader>
               <CardContent>
                 <div class="text-2xl font-bold">{{ lastCheckTime }}</div>
@@ -61,13 +61,13 @@
           <Card>
             <CardHeader>
               <div class="flex items-center justify-between">
-                <CardTitle>Recent Checks</CardTitle>
+                <CardTitle>最近检查记录</CardTitle>
                 <div class="flex items-center gap-2">
                   <Button 
                     variant="ghost" 
                     size="icon"
                     @click="toggleShowAverageResponseTime"
-                    :title="showAverageResponseTime ? 'Show min-max response time' : 'Show average response time'"
+                    :title="showAverageResponseTime ? '显示最短到最长响应时间' : '显示平均响应时间'"
                   >
                     <Activity v-if="showAverageResponseTime" class="h-5 w-5" />
                     <Timer v-else class="h-5 w-5" />
@@ -76,7 +76,7 @@
                     variant="ghost" 
                     size="icon" 
                     @click="fetchData"
-                    title="Refresh data"
+                    title="刷新数据"
                     :disabled="isRefreshing"
                   >
                     <RefreshCw :class="['h-4 w-4', isRefreshing && 'animate-spin']" />
@@ -105,14 +105,14 @@
             <Card>
               <CardHeader>
                 <div class="flex items-center justify-between">
-                  <CardTitle>Response Time Trend</CardTitle>
+                  <CardTitle>响应时间趋势</CardTitle>
                   <select 
                     v-model="selectedChartDuration"
                     class="text-sm bg-background border rounded-md px-3 py-1 focus:outline-none focus:ring-2 focus:ring-ring"
                   >
-                    <option value="24h">24 hours</option>
-                    <option value="7d">7 days</option>
-                    <option value="30d">30 days</option>
+                    <option value="24h">24 小时</option>
+                    <option value="7d">7 天</option>
+                    <option value="30d">30 天</option>
                   </select>
                 </div>
               </CardHeader>
@@ -131,11 +131,11 @@
               <Card v-for="period in ['30d', '7d', '24h', '1h']" :key="period">
                 <CardHeader class="pb-2">
                   <CardTitle class="text-sm font-medium text-muted-foreground text-center">
-                    {{ period === '30d' ? 'Last 30 days' : period === '7d' ? 'Last 7 days' : period === '24h' ? 'Last 24 hours' : 'Last hour' }}
+                    {{ period === '30d' ? '近 30 天' : period === '7d' ? '近 7 天' : period === '24h' ? '近 24 小时' : '近 1 小时' }}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <img :src="generateResponseTimeBadgeImageURL(period)" :alt="`${period} response time`" class="mx-auto mt-2" />
+                  <img :src="generateResponseTimeBadgeImageURL(period)" :alt="`${period} 响应时间`" class="mx-auto mt-2" />
                 </CardContent>
               </Card>
             </div>
@@ -143,15 +143,15 @@
 
           <Card>
             <CardHeader>
-              <CardTitle>Uptime Statistics</CardTitle>
+              <CardTitle>可用率统计</CardTitle>
             </CardHeader>
             <CardContent>
               <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                 <div v-for="period in ['30d', '7d', '24h', '1h']" :key="period" class="text-center">
                   <p class="text-sm text-muted-foreground mb-2">
-                    {{ period === '30d' ? 'Last 30 days' : period === '7d' ? 'Last 7 days' : period === '24h' ? 'Last 24 hours' : 'Last hour' }}
+                    {{ period === '30d' ? '近 30 天' : period === '7d' ? '近 7 天' : period === '24h' ? '近 24 小时' : '近 1 小时' }}
                   </p>
-                  <img :src="generateUptimeBadgeImageURL(period)" :alt="`${period} uptime`" class="mx-auto" />
+                  <img :src="generateUptimeBadgeImageURL(period)" :alt="`${period} 可用率`" class="mx-auto" />
                 </div>
               </div>
             </CardContent>
@@ -159,18 +159,18 @@
 
           <Card>
             <CardHeader>
-              <CardTitle>Current Health</CardTitle>
+              <CardTitle>当前健康状况</CardTitle>
             </CardHeader>
             <CardContent>
               <div class="text-center">
-                <img :src="generateHealthBadgeImageURL()" alt="health badge" class="mx-auto" />
+                <img :src="generateHealthBadgeImageURL()" alt="健康徽章" class="mx-auto" />
               </div>
             </CardContent>
           </Card>
 
           <Card v-if="events && events.length > 0">
             <CardHeader>
-              <CardTitle>Events</CardTitle>
+              <CardTitle>事件</CardTitle>
             </CardHeader>
             <CardContent>
               <div class="space-y-4">
@@ -253,7 +253,7 @@ const toggleShowAverageResponseTime = () => {
 const pageAverageResponseTime = computed(() => {
   // Use endpointStatus for current page's average response time
   if (!endpointStatus.value || !endpointStatus.value.results || endpointStatus.value.results.length === 0) {
-    return 'N/A'
+    return '无数据'
   }
   let total = 0
   let count = 0
@@ -263,14 +263,14 @@ const pageAverageResponseTime = computed(() => {
       count++
     }
   }
-  if (count === 0) return 'N/A'
+  if (count === 0) return '无数据'
   return `${Math.round(total / count / 1000000)}ms`
 })
 
 const pageResponseTimeRange = computed(() => {
   // Use endpointStatus for current page's response time range
   if (!endpointStatus.value || !endpointStatus.value.results || endpointStatus.value.results.length === 0) {
-    return 'N/A'
+    return '无数据'
   }
   let min = Infinity
   let max = 0
@@ -285,7 +285,7 @@ const pageResponseTimeRange = computed(() => {
     }
   }
   
-  if (!hasData) return 'N/A'
+  if (!hasData) return '无数据'
   const minMs = Math.trunc(min / 1000000)
   const maxMs = Math.trunc(max / 1000000)
   // If min and max are the same, show single value
@@ -298,7 +298,7 @@ const pageResponseTimeRange = computed(() => {
 const lastCheckTime = computed(() => {
   // Use currentStatus for real-time last check time
   if (!currentStatus.value || !currentStatus.value.results || currentStatus.value.results.length === 0) {
-    return 'Never'
+    return '从未'
   }
   return generatePrettyTimeAgo(currentStatus.value.results[currentStatus.value.results.length - 1].timestamp)
 })
@@ -326,24 +326,24 @@ const fetchData = async () => {
           let event = data.events[i]
           if (i === data.events.length - 1) {
             if (event.type === 'UNHEALTHY') {
-              event.fancyText = 'Endpoint is unhealthy'
+              event.fancyText = '端点异常'
             } else if (event.type === 'HEALTHY') {
-              event.fancyText = 'Endpoint is healthy'
+              event.fancyText = '端点健康'
             } else if (event.type === 'START') {
-              event.fancyText = 'Monitoring started'
+              event.fancyText = '开始监控'
             }
           } else {
             let nextEvent = data.events[i + 1]
             if (event.type === 'HEALTHY') {
-              event.fancyText = 'Endpoint became healthy'
+              event.fancyText = '端点已恢复'
             } else if (event.type === 'UNHEALTHY') {
               if (nextEvent) {
-                event.fancyText = 'Endpoint was unhealthy for ' + generatePrettyTimeDifference(nextEvent.timestamp, event.timestamp)
+                event.fancyText = '端点异常持续了 ' + generatePrettyTimeDifference(nextEvent.timestamp, event.timestamp)
               } else {
-                event.fancyText = 'Endpoint became unhealthy'
+                event.fancyText = '端点变为异常'
               }
             } else if (event.type === 'START') {
-              event.fancyText = 'Monitoring started'
+              event.fancyText = '开始监控'
             }
           }
           event.fancyTimeAgo = generatePrettyTimeAgo(event.timestamp)

@@ -4,7 +4,7 @@
       <!-- Refresh Rate -->
       <button 
         @click="showRefreshMenu = !showRefreshMenu"
-        :aria-label="`Refresh interval: ${formatRefreshInterval(refreshIntervalValue)}`"
+        :aria-label="`刷新间隔：${formatRefreshInterval(refreshIntervalValue)}`"
         :aria-expanded="showRefreshMenu"
         class="flex items-center gap-1.5 px-3 py-1.5 rounded-full hover:bg-accent transition-colors relative"
       >
@@ -37,7 +37,7 @@
       <!-- Theme Toggle -->
       <button
         @click="toggleDarkMode"
-        :aria-label="darkMode ? 'Switch to light mode' : 'Switch to dark mode'"
+        :aria-label="darkMode ? '切换到浅色模式' : '切换到深色模式'"
         class="p-1.5 rounded-full hover:bg-accent transition-colors group relative"
       >
         <Sun v-if="darkMode" class="h-3.5 w-3.5 transition-all" />
@@ -45,7 +45,7 @@
         
         <!-- Tooltip -->
         <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-popover text-popover-foreground text-xs rounded-md shadow-md opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap">
-          {{ darkMode ? 'Light mode' : 'Dark mode' }}
+          {{ darkMode ? '浅色模式' : '深色模式' }}
         </div>
       </button>
     </div>
@@ -61,12 +61,12 @@ const emit = defineEmits(['refreshData'])
 
 // Constants
 const REFRESH_INTERVALS = [
-  { value: '10', label: '10s' },
-  { value: '30', label: '30s' },
-  { value: '60', label: '1m' },
-  { value: '120', label: '2m' },
-  { value: '300', label: '5m' },
-  { value: '600', label: '10m' }
+  { value: '10', label: '10秒' },
+  { value: '30', label: '30秒' },
+  { value: '60', label: '1分钟' },
+  { value: '120', label: '2分钟' },
+  { value: '300', label: '5分钟' },
+  { value: '600', label: '10分钟' }
 ]
 const DEFAULT_REFRESH_INTERVAL = '300'
 const THEME_COOKIE_NAME = 'theme'
@@ -97,7 +97,7 @@ let refreshIntervalHandler = null
 // Methods
 const formatRefreshInterval = (value) => {
   const interval = REFRESH_INTERVALS.find(i => i.value === value)
-  return interval ? interval.label : `${value}s`
+  return interval ? interval.label : `${value}秒`
 }
 
 const setRefreshInterval = (seconds) => {

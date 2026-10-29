@@ -30,6 +30,8 @@ const (
 	HealthStatusUp      = "up"
 	HealthStatusDown    = "down"
 	HealthStatusUnknown = "?"
+
+	badgeFontFamily = "Microsoft YaHei,PingFang SC,Noto Sans SC,sans-serif"
 )
 
 var (
@@ -178,14 +180,8 @@ func HealthBadgeShields(c *fiber.Ctx) error {
 func generateUptimeBadgeSVG(duration string, uptime float64) []byte {
 	var labelWidth, valueWidth, valueWidthAdjustment int
 	switch duration {
-	case "30d":
-		labelWidth = 70
-	case "7d":
-		labelWidth = 65
-	case "24h":
-		labelWidth = 70
-	case "1h":
-		labelWidth = 65
+	case "30d", "7d", "24h", "1h":
+		labelWidth = 110
 	default:
 	}
 	color := getBadgeColorFromUptime(uptime)
@@ -210,12 +206,12 @@ func generateUptimeBadgeSVG(duration string, uptime float64) []byte {
     <path fill="%s" d="M%d 0h%dv20H%dz"/>
     <path fill="url(#b)" d="M0 0h%dv20H0z"/>
   </g>
-  <g fill="#fff" text-anchor="middle" font-family="DejaVu Sans,Verdana,Geneva,sans-serif" font-size="11">
+  <g fill="#fff" text-anchor="middle" font-family="%s" font-size="11">
     <text x="%d" y="15" fill="#010101" fill-opacity=".3">
-      uptime %s
+      可用率 %s
     </text>
     <text x="%d" y="14">
-      uptime %s
+      可用率 %s
     </text>
     <text x="%d" y="15" fill="#010101" fill-opacity=".3">
       %s
@@ -224,8 +220,34 @@ func generateUptimeBadgeSVG(duration string, uptime float64) []byte {
       %s
     </text>
   </g>
-</svg>`, width, width, labelWidth, color, labelWidth, valueWidth, labelWidth, width, labelX, duration, labelX, duration, valueX, sanitizedValue, valueX, sanitizedValue))
+</svg>`, width, width, labelWidth, color, labelWidth, valueWidth, labelWidth, width, badgeFontFamily, labelX, badgeDurationLabel(duration), labelX, badgeDurationLabel(duration), valueX, sanitizedValue, valueX, sanitizedValue))
 	return svg
+}
+
+func badgeDurationLabel(duration string) string {
+	switch duration {
+	case "30d":
+		return "30天"
+	case "7d":
+		return "7天"
+	case "24h":
+		return "24小时"
+	case "1h":
+		return "1小时"
+	default:
+		return duration
+	}
+}
+
+func healthStatusLabel(healthStatus string) string {
+	switch healthStatus {
+	case HealthStatusUp:
+		return "正常"
+	case HealthStatusDown:
+		return "异常"
+	default:
+		return "未知"
+	}
 }
 
 func getBadgeColorFromUptime(uptime float64) string {
@@ -275,12 +297,12 @@ func generateResponseTimeBadgeSVG(duration string, averageResponseTime int, key 
     <path fill="%s" d="M%d 0h%dv20H%dz"/>
     <path fill="url(#b)" d="M0 0h%dv20H0z"/>
   </g>
-  <g fill="#fff" text-anchor="middle" font-family="DejaVu Sans,Verdana,Geneva,sans-serif" font-size="11">
+  <g fill="#fff" text-anchor="middle" font-family="%s" font-size="11">
     <text x="%d" y="15" fill="#010101" fill-opacity=".3">
-      response time %s
+      响应 %s
     </text>
     <text x="%d" y="14">
-      response time %s
+      响应 %s
     </text>
     <text x="%d" y="15" fill="#010101" fill-opacity=".3">
       %s
@@ -289,7 +311,7 @@ func generateResponseTimeBadgeSVG(duration string, averageResponseTime int, key 
       %s
     </text>
   </g>
-</svg>`, width, width, labelWidth, color, labelWidth, valueWidth, labelWidth, width, labelX, duration, labelX, duration, valueX, sanitizedValue, valueX, sanitizedValue))
+</svg>`, width, width, labelWidth, color, labelWidth, valueWidth, labelWidth, width, badgeFontFamily, labelX, badgeDurationLabel(duration), labelX, badgeDurationLabel(duration), valueX, sanitizedValue, valueX, sanitizedValue))
 	return svg
 }
 
@@ -308,18 +330,10 @@ func getBadgeColorFromResponseTime(responseTime int, key string, cfg *config.Con
 }
 
 func generateHealthBadgeSVG(healthStatus string) []byte {
-	var labelWidth, valueWidth int
-	switch healthStatus {
-	case HealthStatusUp:
-		valueWidth = 28
-	case HealthStatusDown:
-		valueWidth = 44
-	case HealthStatusUnknown:
-		valueWidth = 10
-	default:
-	}
 	color := getBadgeColorFromHealth(healthStatus)
-	labelWidth = 48
+	labelWidth := 48
+	valueWidth := 40
+	statusLabel := healthStatusLabel(healthStatus)
 
 	width := labelWidth + valueWidth
 	labelX := labelWidth / 2
@@ -337,12 +351,12 @@ func generateHealthBadgeSVG(healthStatus string) []byte {
     <path fill="%s" d="M%d 0h%dv20H%dz"/>
     <path fill="url(#b)" d="M0 0h%dv20H0z"/>
   </g>
-  <g fill="#fff" text-anchor="middle" font-family="DejaVu Sans,Verdana,Geneva,sans-serif" font-size="11">
+  <g fill="#fff" text-anchor="middle" font-family="%s" font-size="11">
     <text x="%d" y="15" fill="#010101" fill-opacity=".3">
-      health
+      健康
     </text>
     <text x="%d" y="14">
-      health
+      健康
     </text>
     <text x="%d" y="15" fill="#010101" fill-opacity=".3">
       %s
@@ -351,7 +365,7 @@ func generateHealthBadgeSVG(healthStatus string) []byte {
       %s
     </text>
   </g>
-</svg>`, width, width, labelWidth, color, labelWidth, valueWidth, labelWidth, width, labelX, labelX, valueX, healthStatus, valueX, healthStatus))
+</svg>`, width, width, labelWidth, color, labelWidth, valueWidth, labelWidth, width, badgeFontFamily, labelX, labelX, valueX, statusLabel, valueX, statusLabel))
 
 	return svg
 }
@@ -360,8 +374,8 @@ func generateHealthBadgeShields(healthStatus string) ([]byte, error) {
 	color := getBadgeShieldsColorFromHealth(healthStatus)
 	data := map[string]interface{}{
 		"schemaVersion": 1,
-		"label":         "gatus",
-		"message":       healthStatus,
+		"label":         "状态",
+		"message":       healthStatusLabel(healthStatus),
 		"color":         color,
 	}
 	return json.Marshal(data)

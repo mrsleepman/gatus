@@ -12,12 +12,12 @@
               variant="ghost" 
               size="icon" 
               @click="toggleShowAverageResponseTime" 
-              :title="showAverageResponseTime ? 'Show min-max response time' : 'Show average response time'"
+              :title="showAverageResponseTime ? '显示最短到最长响应时间' : '显示平均响应时间'"
             >
               <Activity v-if="showAverageResponseTime" class="h-5 w-5" />
               <Timer v-else class="h-5 w-5" />
             </Button>
-            <Button variant="ghost" size="icon" @click="refreshData" title="Refresh data">
+            <Button variant="ghost" size="icon" @click="refreshData" title="刷新数据">
               <RefreshCw class="h-5 w-5" />
             </Button>
           </div>
@@ -41,11 +41,11 @@
 
       <div v-else-if="filteredEndpoints.length === 0 && filteredSuites.length === 0" class="text-center py-20">
         <AlertCircle class="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-        <h3 class="text-lg font-semibold mb-2">No endpoints or suites found</h3>
+        <h3 class="text-lg font-semibold mb-2">未找到端点或套件</h3>
         <p class="text-muted-foreground">
           {{ searchQuery || showOnlyFailing || showRecentFailures 
-            ? 'Try adjusting your filters' 
-            : 'No endpoints or suites are configured' }}
+            ? '请调整筛选条件' 
+            : '尚未配置端点或套件' }}
         </p>
       </div>
 
@@ -76,7 +76,7 @@
             <div v-if="uncollapsedGroups.has(group)" class="endpoint-group-content p-4">
               <!-- Suites Section -->
               <div v-if="items.suites.length > 0" class="mb-4">
-                <h3 class="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">Suites</h3>
+                <h3 class="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">套件</h3>
                 <div class="grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
                   <SuiteCard
                     v-for="suite in items.suites"
@@ -90,7 +90,7 @@
               
               <!-- Endpoints Section -->
               <div v-if="items.endpoints.length > 0">
-                <h3 v-if="items.suites.length > 0" class="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">Endpoints</h3>
+                <h3 v-if="items.suites.length > 0" class="text-sm font-semibold text-muted-foreground uppercase tracking-wider mb-3">端点</h3>
                 <div class="grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
                   <EndpointCard
                     v-for="endpoint in items.endpoints"
@@ -110,7 +110,7 @@
         <div v-else>
           <!-- Suites Section -->
           <div v-if="filteredSuites.length > 0" class="mb-6">
-            <h2 class="text-lg font-semibold text-foreground mb-3">Suites</h2>
+            <h2 class="text-lg font-semibold text-foreground mb-3">套件</h2>
             <div class="grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
               <SuiteCard
                 v-for="suite in paginatedSuites"
@@ -124,7 +124,7 @@
           
           <!-- Endpoints Section -->
           <div v-if="filteredEndpoints.length > 0">
-            <h2 v-if="filteredSuites.length > 0" class="text-lg font-semibold text-foreground mb-3">Endpoints</h2>
+            <h2 v-if="filteredSuites.length > 0" class="text-lg font-semibold text-foreground mb-3">端点</h2>
             <div class="grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
               <EndpointCard
                 v-for="endpoint in paginatedEndpoints"
@@ -323,18 +323,18 @@ const groupedEndpoints = computed(() => {
   
   const grouped = {}
   filteredEndpoints.value.forEach(endpoint => {
-    const group = endpoint.group || 'No Group'
+    const group = endpoint.group || '未分组'
     if (!grouped[group]) {
       grouped[group] = []
     }
     grouped[group].push(endpoint)
   })
   
-  // Sort groups alphabetically, with 'No Group' at the end
+  // Sort groups alphabetically, with '未分组' at the end
   const sortedGroups = Object.keys(grouped).sort((a, b) => {
-    if (a === 'No Group') return 1
-    if (b === 'No Group') return -1
-    return a.localeCompare(b)
+    if (a === '未分组') return 1
+    if (b === '未分组') return -1
+    return a.localeCompare(b, 'zh')
   })
   
   const result = {}
@@ -354,7 +354,7 @@ const combinedGroups = computed(() => {
   
   // Add endpoints
   filteredEndpoints.value.forEach(endpoint => {
-    const group = endpoint.group || 'No Group'
+    const group = endpoint.group || '未分组'
     if (!combined[group]) {
       combined[group] = { endpoints: [], suites: [] }
     }
@@ -363,18 +363,18 @@ const combinedGroups = computed(() => {
   
   // Add suites
   filteredSuites.value.forEach(suite => {
-    const group = suite.group || 'No Group'
+    const group = suite.group || '未分组'
     if (!combined[group]) {
       combined[group] = { endpoints: [], suites: [] }
     }
     combined[group].suites.push(suite)
   })
   
-  // Sort groups alphabetically, with 'No Group' at the end
+  // Sort groups alphabetically, with '未分组' at the end
   const sortedGroups = Object.keys(combined).sort((a, b) => {
-    if (a === 'No Group') return 1
-    if (b === 'No Group') return -1
-    return a.localeCompare(b)
+    if (a === '未分组') return 1
+    if (b === '未分组') return -1
+    return a.localeCompare(b, 'zh')
   })
   
   const result = {}
@@ -533,11 +533,11 @@ const initializeCollapsedGroups = () => {
 }
 
 const dashboardHeading = computed(() => {
-  return window.config && window.config.dashboardHeading && window.config.dashboardHeading !== '{{ .UI.DashboardHeading }}' ? window.config.dashboardHeading : "Health Dashboard"
+  return window.config && window.config.dashboardHeading && window.config.dashboardHeading !== '{{ .UI.DashboardHeading }}' ? window.config.dashboardHeading : "WebWatch"
 })
 
 const dashboardSubheading = computed(() => {
-  return window.config && window.config.dashboardSubheading && window.config.dashboardSubheading !== '{{ .UI.DashboardSubheading }}' ? window.config.dashboardSubheading : "Monitor the health of your endpoints in real-time"
+  return window.config && window.config.dashboardSubheading && window.config.dashboardSubheading !== '{{ .UI.DashboardSubheading }}' ? window.config.dashboardSubheading : "实时查看各端点的健康状况"
 })
 
 onMounted(() => {

@@ -5,22 +5,22 @@
       <div class="mb-6">
         <Button variant="ghost" size="sm" @click="goBack" class="mb-4">
           <ArrowLeft class="h-4 w-4 mr-2" />
-          Back to Dashboard
+          返回仪表盘
         </Button>
         
         <div class="flex items-start justify-between">
           <div>
-            <h1 class="text-3xl font-bold tracking-tight">{{ suite?.name || 'Loading...' }}</h1>
+            <h1 class="text-3xl font-bold tracking-tight">{{ suite?.name || '加载中...' }}</h1>
             <p class="text-muted-foreground mt-2">
               <span v-if="suite?.group">{{ suite.group }} • </span>
               <span v-if="latestResult">
-                {{ selectedResult && selectedResult.timestamp !== sortedResults[0]?.timestamp ? 'Ran' : 'Last run' }} {{ formatRelativeTime(latestResult.timestamp) }}
+                {{ selectedResult && selectedResult.timestamp !== sortedResults[0]?.timestamp ? '执行于' : '最近运行' }} {{ formatRelativeTime(latestResult.timestamp) }}
               </span>
             </p>
           </div>
           <div class="flex items-center gap-2">
             <StatusBadge v-if="latestResult" :status="latestResult.success ? 'healthy' : 'unhealthy'" />
-            <Button variant="ghost" size="icon" @click="refreshData" title="Refresh">
+            <Button variant="ghost" size="icon" @click="refreshData" title="刷新">
               <RefreshCw class="h-5 w-5" />
             </Button>
           </div>
@@ -33,41 +33,41 @@
 
       <div v-else-if="!suite" class="text-center py-20">
         <AlertCircle class="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-        <h3 class="text-lg font-semibold mb-2">Suite not found</h3>
-        <p class="text-muted-foreground">The requested suite could not be found.</p>
+        <h3 class="text-lg font-semibold mb-2">未找到套件</h3>
+        <p class="text-muted-foreground">请求的套件不存在。</p>
       </div>
 
       <div v-else class="space-y-6">
         <!-- Latest Execution -->
         <Card v-if="latestResult">
           <CardHeader>
-            <CardTitle>{{ selectedResult?.timestamp === sortedResults[0]?.timestamp ? 'Latest Execution' : `Execution at ${formatTimestamp(selectedResult.timestamp)}` }}</CardTitle>
+            <CardTitle>{{ selectedResult?.timestamp === sortedResults[0]?.timestamp ? '最近一次执行' : `执行于 ${formatTimestamp(selectedResult.timestamp)}` }}</CardTitle>
           </CardHeader>
           <CardContent>
             <div class="space-y-4">
               <!-- Execution stats -->
               <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
                 <div>
-                  <p class="text-sm text-muted-foreground">Status</p>
-                  <p class="text-lg font-medium">{{ latestResult.success ? 'Success' : 'Failed' }}</p>
+                  <p class="text-sm text-muted-foreground">状态</p>
+                  <p class="text-lg font-medium">{{ latestResult.success ? '成功' : '失败' }}</p>
                 </div>
                 <div>
-                  <p class="text-sm text-muted-foreground">Duration</p>
+                  <p class="text-sm text-muted-foreground">耗时</p>
                   <p class="text-lg font-medium">{{ formatDuration(latestResult.duration) }}</p>
                 </div>
                 <div>
-                  <p class="text-sm text-muted-foreground">Endpoints</p>
+                  <p class="text-sm text-muted-foreground">端点</p>
                   <p class="text-lg font-medium">{{ latestResult.endpointResults?.length || 0 }}</p>
                 </div>
                 <div>
-                  <p class="text-sm text-muted-foreground">Success Rate</p>
+                  <p class="text-sm text-muted-foreground">成功率</p>
                   <p class="text-lg font-medium">{{ calculateSuccessRate(latestResult) }}%</p>
                 </div>
               </div>
 
               <!-- Enhanced Execution Flow -->
               <div class="mt-6">
-                <h3 class="text-lg font-semibold mb-4">Execution Flow</h3>
+                <h3 class="text-lg font-semibold mb-4">执行流程</h3>
                 <SequentialFlowDiagram
                   :flow-steps="flowSteps"
                   :progress-percentage="executionProgress"
@@ -80,7 +80,7 @@
 
               <!-- Errors -->
               <div v-if="latestResult.errors && latestResult.errors.length > 0" class="mt-6">
-                <h3 class="text-lg font-semibold mb-3 text-red-500">Suite Errors</h3>
+                <h3 class="text-lg font-semibold mb-3 text-red-500">套件错误</h3>
                 <div class="space-y-2">
                   <div
                     v-for="(error, index) in latestResult.errors"
@@ -98,7 +98,7 @@
         <!-- Execution History -->
         <Card>
           <CardHeader>
-            <CardTitle>Execution History</CardTitle>
+            <CardTitle>执行历史</CardTitle>
           </CardHeader>
           <CardContent>
             <div v-if="sortedResults.length > 0" class="space-y-2">
@@ -114,7 +114,7 @@
                   <div>
                     <p class="text-sm font-medium">{{ formatTimestamp(result.timestamp) }}</p>
                     <p class="text-xs text-muted-foreground">
-                      {{ result.endpointResults?.length || 0 }} endpoints • {{ formatDuration(result.duration) }}
+                      {{ result.endpointResults?.length || 0 }} 个端点 • {{ formatDuration(result.duration) }}
                     </p>
                   </div>
                 </div>
@@ -122,7 +122,7 @@
               </div>
             </div>
             <div v-else class="text-center py-8 text-muted-foreground">
-              No execution history available
+              暂无执行记录
             </div>
           </CardContent>
         </Card>

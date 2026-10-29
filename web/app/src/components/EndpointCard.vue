@@ -11,7 +11,7 @@
               :title="endpoint.name"
               role="link"
               tabindex="0"
-              :aria-label="`View details for ${endpoint.name}`">
+              :aria-label="`查看 ${endpoint.name} 的详情`">
               {{ endpoint.name }}
             </span>
           </CardTitle>
@@ -31,7 +31,7 @@
         <div>
           <div class="flex items-center justify-between mb-1">
             <div class="flex-1"></div>
-            <p class="text-xs text-muted-foreground" :title="showAverageResponseTime ? 'Average response time' : 'Minimum and maximum response time'">{{ formattedResponseTime }}</p>
+            <p class="text-xs text-muted-foreground" :title="showAverageResponseTime ? '平均响应时间' : '最短和最长响应时间'">{{ formattedResponseTime }}</p>
           </div>
           <div class="flex gap-0.5">
             <div
@@ -116,7 +116,7 @@ const displayResults = computed(() => {
 
 const formattedResponseTime = computed(() => {
   if (!props.endpoint.results || props.endpoint.results.length === 0) {
-    return 'N/A'
+    return '无数据'
   }
   
   let total = 0
@@ -134,7 +134,7 @@ const formattedResponseTime = computed(() => {
     }
   }
   
-  if (count === 0) return 'N/A'
+  if (count === 0) return '无数据'
   
   if (props.showAverageResponseTime) {
     const avgMs = Math.round(total / count)

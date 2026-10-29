@@ -6,7 +6,7 @@
         sizeClass,
       ]"
       src="../assets/logo.svg" 
-      alt="Gatus logo" 
+      alt="加载中" 
     />
   </div>
 </template>

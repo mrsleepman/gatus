@@ -11,7 +11,7 @@
             {{ step.name }}
           </h2>
           <p class="text-sm text-muted-foreground mt-1">
-            Step {{ index + 1 }} • {{ formatDuration(step.duration) }}
+            第 {{ index + 1 }} 步 • {{ formatDuration(step.duration) }}
           </p>
         </div>
         <Button variant="ghost" size="icon" @click="$emit('close')">
@@ -26,8 +26,8 @@
           <div class="flex items-center gap-2 px-3 py-2 bg-blue-50 dark:bg-blue-900/30 rounded-lg border border-blue-200 dark:border-blue-700">
             <RotateCcw class="w-4 h-4 text-blue-600 dark:text-blue-400" />
             <div>
-              <p class="text-sm font-medium text-blue-900 dark:text-blue-200">Always Run</p>
-              <p class="text-xs text-blue-600 dark:text-blue-400">This endpoint is configured to execute even after failures</p>
+              <p class="text-sm font-medium text-blue-900 dark:text-blue-200">始终执行</p>
+              <p class="text-xs text-blue-600 dark:text-blue-400">即使前面的步骤失败，此端点仍会执行</p>
             </div>
           </div>
         </div>
@@ -36,7 +36,7 @@
         <div v-if="step.errors?.length" class="space-y-2">
           <h3 class="text-sm font-medium flex items-center gap-2 text-red-600 dark:text-red-400">
             <AlertCircle class="w-4 h-4" />
-            Errors ({{ step.errors.length }})
+            错误（{{ step.errors.length }}）
           </h3>
           <div class="space-y-2">
             <div v-for="(error, index) in step.errors" :key="index" 
@@ -50,7 +50,7 @@
         <div v-if="step.result && step.result.timestamp" class="space-y-2">
           <h3 class="text-sm font-medium flex items-center gap-2">
             <Clock class="w-4 h-4" />
-            Timestamp
+            时间
           </h3>
           <p class="text-xs font-mono text-muted-foreground">{{ prettifyTimestamp(step.result.timestamp) }}</p>
         </div>
@@ -59,17 +59,17 @@
         <div v-if="step.result" class="space-y-2">
           <h3 class="text-sm font-medium flex items-center gap-2">
             <Download class="w-4 h-4" />
-            Response
+            响应
           </h3>
           <div class="grid grid-cols-2 gap-4 text-xs">
             <div>
-              <span class="text-muted-foreground">Duration:</span>
+              <span class="text-muted-foreground">耗时</span>
               <p class="font-mono mt-1">{{ formatDuration(step.result.duration) }}</p>
             </div>
             <div>
-              <span class="text-muted-foreground">Success:</span>
+              <span class="text-muted-foreground">是否成功</span>
               <p class="mt-1" :class="step.result.success ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'">
-                {{ step.result.success ? 'Yes' : 'No' }}
+                {{ step.result.success ? '是' : '否' }}
               </p>
             </div>
           </div>
@@ -79,7 +79,7 @@
         <div v-if="step.result?.conditionResults?.length" class="space-y-2">
           <h3 class="text-sm font-medium flex items-center gap-2">
             <CheckCircle class="w-4 h-4" />
-            Condition Results ({{ step.result.conditionResults.length }})
+            条件结果（{{ step.result.conditionResults.length }}）
           </h3>
           <div class="space-y-2 max-h-48 overflow-y-auto">
             <div
@@ -114,7 +114,7 @@
                       :class="conditionResult.success
                         ? 'text-green-600 dark:text-green-400'
                         : 'text-red-600 dark:text-red-400'">
-                  {{ conditionResult.success ? 'Passed' : 'Failed' }}
+                  {{ conditionResult.success ? '通过' : '未通过' }}
                 </span>
               </div>
             </div>
@@ -125,7 +125,7 @@
         <div v-if="step.endpoint" class="space-y-2">
           <h3 class="text-sm font-medium flex items-center gap-2">
             <Settings class="w-4 h-4" />
-            Endpoint Configuration
+            端点配置
           </h3>
           <div class="space-y-3 text-xs">
             <div v-if="step.endpoint.url">
@@ -133,15 +133,15 @@
               <p class="font-mono mt-1 break-all">{{ step.endpoint.url }}</p>
             </div>
             <div v-if="step.endpoint.method">
-              <span class="text-muted-foreground">Method:</span>
+              <span class="text-muted-foreground">方法</span>
               <p class="mt-1 font-medium">{{ step.endpoint.method }}</p>
             </div>
             <div v-if="step.endpoint.interval">
-              <span class="text-muted-foreground">Interval:</span>
+              <span class="text-muted-foreground">间隔</span>
               <p class="mt-1">{{ step.endpoint.interval }}</p>
             </div>
             <div v-if="step.endpoint.timeout">
-              <span class="text-muted-foreground">Timeout:</span>
+              <span class="text-muted-foreground">超时</span>
               <p class="mt-1">{{ step.endpoint.timeout }}</p>
             </div>
           </div>
@@ -151,7 +151,7 @@
         <div v-if="step.result?.errors?.length" class="space-y-2">
           <h3 class="text-sm font-medium flex items-center gap-2 text-red-600 dark:text-red-400">
             <AlertCircle class="w-4 h-4" />
-            Result Errors ({{ step.result.errors.length }})
+            结果错误（{{ step.result.errors.length }}）
           </h3>
           <div class="space-y-2 max-h-32 overflow-y-auto">
             <div v-for="(error, index) in step.result.errors" :key="index"

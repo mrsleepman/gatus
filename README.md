@@ -1,20 +1,8 @@
-[![Gatus](.github/assets/logo-with-dark-text.png)](https://gatus.io)
+# WebWatch
 
-![test](https://github.com/TwiN/gatus/actions/workflows/test.yml/badge.svg)
-[![Go Report Card](https://goreportcard.com/badge/github.com/TwiN/gatus?)](https://goreportcard.com/report/github.com/TwiN/gatus)
-[![Go version](https://img.shields.io/github/go-mod/go-version/TwiN/gatus.svg)](https://github.com/TwiN/gatus)
-[![Docker pulls](https://img.shields.io/docker/pulls/twinproduction/gatus.svg)](https://cloud.docker.com/repository/docker/twinproduction/gatus)
-[![Follow TwiN](https://img.shields.io/github/followers/TwiN?label=Follow&style=social)](https://github.com/TwiN)
+可以通过 HTTP、ICMP、TCP、DNS 等方式监控服务，并用状态码、响应时间、证书到期时间、响应体等条件判断结果。每次检查都可以配合 Slack、Teams、PagerDuty、Discord、Twilio 等渠道发送告警。
 
-Gatus is a developer-oriented health dashboard that gives you the ability to monitor your services using HTTP, ICMP, TCP, and even DNS
-queries as well as evaluate the result of said queries by using a list of conditions on values like the status code,
-the response time, the certificate expiration, the body and many others. The icing on top is that each of these health
-checks can be paired with alerting via Slack, Teams, PagerDuty, Discord, Twilio and many more.
-
-I personally deploy it in my Kubernetes cluster and let it monitor the status of my
-core applications: https://status.twin.sh/
-
-_Looking for a managed solution? Check out [Gatus.io](https://gatus.io)._
+界面默认使用中文，页面标题、页眉和说明中不再使用原项目名称。
 
 <details>
   <summary><b>Quick start</b></summary>
@@ -30,11 +18,7 @@ docker run -p 8080:8080 --name gatus twinproduction/gatus:stable
 For more details, see [Usage](#usage)
 </details>
 
-> ❤ Like this project? Please consider [sponsoring me](https://github.com/sponsors/TwiN).
-
-![Gatus dashboard](.github/assets/dashboard-dark.jpg)
-
-Have any feedback or questions? [Create a discussion](https://github.com/TwiN/gatus/discussions/new).
+![仪表盘](.github/assets/dashboard-dark.jpg)
 
 
 ## Table of Contents
@@ -538,11 +522,11 @@ Allows you to configure the application wide defaults for the dashboard's UI. So
 | Parameter                 | Description                                                                                                                              | Default                                             |
 |:--------------------------|:-----------------------------------------------------------------------------------------------------------------------------------------|:----------------------------------------------------|
 | `ui`                      | UI configuration                                                                                                                         | `{}`                                                |
-| `ui.title`                | [Title of the document](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/title).                                                | `Health Dashboard ǀ Gatus`                          |
-| `ui.description`          | Meta description for the page.                                                                                                           | `Gatus is an advanced...`.                          |
-| `ui.dashboard-heading`    | Dashboard title between header and endpoints                                                                                             | `Health Dashboard`                                  |
-| `ui.dashboard-subheading` | Dashboard description between header and endpoints                                                                                       | `Monitor the health of your endpoints in real-time` |
-| `ui.header`               | Header at the top of the dashboard. Also used as the title on the OIDC login page.                                                       | `Gatus`                                             |
+| `ui.title`                | [Title of the document](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/title).                                                | `WebWatch`                          |
+| `ui.description`          | Meta description for the page.                                                                                                           | `自动化状态页，用于监控应用运行状况，并在出现问题时发送告警`                          |
+| `ui.dashboard-heading`    | Dashboard title between header and endpoints                                                                                             | `WebWatch`                                  |
+| `ui.dashboard-subheading` | Dashboard description between header and endpoints                                                                                       | `实时查看各端点的健康状况` |
+| `ui.header`               | Header at the top of the dashboard. Also used as the title on the OIDC login page.                                                       | `WebWatch`                                             |
 | `ui.logo`                 | URL to the logo to display. When set, shown alongside the Gatus logo on the OIDC login page.                                             | `""`                                                |
 | `ui.link`                 | Link to open when the logo is clicked.                                                                                                   | `""`                                                |
 | `ui.favicon.default`      | Favourite default icon to display in web browser tab or address bar.                                                                     | `/favicon.ico`                                      |
@@ -555,7 +539,7 @@ Allows you to configure the application wide defaults for the dashboard's UI. So
 | `ui.dark-mode`            | Whether to enable dark mode by default. Note that this is superseded by the user's operating system theme preferences.                   | `true`                                              |
 | `ui.default-sort-by`      | Default sorting option for endpoints in the dashboard. Can be `name`, `group`, or `health`. Note that user preferences override this.    | `name`                                              |
 | `ui.default-filter-by`    | Default filter option for endpoints in the dashboard. Can be `none`, `failing`, or `unstable`. Note that user preferences override this. | `none`                                              |
-| `ui.login-subtitle`       | Subtitle displayed on the OIDC login page.                                                                                               | `System Monitoring Dashboard`                       |
+| `ui.login-subtitle`       | Subtitle displayed on the OIDC login page.                                                                                               | `系统监控面板`                       |
 
 ### Announcements
 System-wide announcements allow you to display important messages at the top of the status page. These can be used to inform users about planned maintenance, ongoing issues, or general information. You can use markdown to format your announcements.

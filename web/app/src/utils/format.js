@@ -4,7 +4,7 @@
  * @returns {string} Formatted duration string (e.g., "123ms", "1.23s")
  */
 export const formatDuration = (duration) => {
-  if (!duration && duration !== 0) return 'N/A'
+  if (!duration && duration !== 0) return '无数据'
   
   // Convert nanoseconds to milliseconds
   const durationMs = duration / 1000000

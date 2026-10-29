@@ -3,12 +3,12 @@
     <div class="flex-1">
       <div class="relative">
         <Search class="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-        <label for="search-input" class="sr-only">Search endpoints</label>
+        <label for="search-input" class="sr-only">搜索端点</label>
         <Input
           id="search-input"
           v-model="searchQuery"
           type="text"
-          placeholder="Search endpoints..."
+          placeholder="搜索端点..."
           class="pl-10 text-sm sm:text-base"
           @input="$emit('search', searchQuery)"
         />
@@ -16,22 +16,22 @@
     </div>
     <div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
       <div class="flex items-center gap-2 flex-1 sm:flex-initial">
-        <label class="text-xs sm:text-sm font-medium text-muted-foreground whitespace-nowrap">Filter by:</label>
+        <label class="text-xs sm:text-sm font-medium text-muted-foreground whitespace-nowrap">筛选</label>
         <Select 
           v-model="filterBy" 
           :options="filterOptions"
-          placeholder="None"
+          placeholder="无"
           class="flex-1 sm:w-[140px] md:w-[160px]"
           @update:model-value="handleFilterChange"
         />
       </div>
       
       <div class="flex items-center gap-2 flex-1 sm:flex-initial">
-        <label class="text-xs sm:text-sm font-medium text-muted-foreground whitespace-nowrap">Sort by:</label>
+        <label class="text-xs sm:text-sm font-medium text-muted-foreground whitespace-nowrap">排序</label>
         <Select 
           v-model="sortBy" 
           :options="sortOptions"
-          placeholder="Name"
+          placeholder="名称"
           class="flex-1 sm:w-[90px] md:w-[100px]"
           @update:model-value="handleSortChange"
         />
@@ -51,15 +51,15 @@ const filterBy = ref(localStorage.getItem('gatus:filter-by') || (typeof window !
 const sortBy = ref(localStorage.getItem('gatus:sort-by') || (typeof window !== 'undefined' && window.config?.defaultSortBy) || 'name')
 
 const filterOptions = [
-  { label: 'None', value: 'none' },
-  { label: 'Failing', value: 'failing' },
-  { label: 'Unstable', value: 'unstable' }
+  { label: '无', value: 'none' },
+  { label: '异常', value: 'failing' },
+  { label: '不稳定', value: 'unstable' }
 ]
 
 const sortOptions = [
-  { label: 'Name', value: 'name' },
-  { label: 'Group', value: 'group' },
-  { label: 'Health', value: 'health' }
+  { label: '名称', value: 'name' },
+  { label: '分组', value: 'group' },
+  { label: '健康', value: 'health' }
 ]
 
 const emit = defineEmits(['search', 'update:showOnlyFailing', 'update:showRecentFailures', 'update:groupByGroup', 'update:sortBy', 'initializeCollapsedGroups'])

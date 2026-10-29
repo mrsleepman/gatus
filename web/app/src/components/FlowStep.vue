@@ -27,10 +27,10 @@
       <div class="flex flex-wrap gap-1">
         <span v-if="step.isAlwaysRun" class="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 rounded-md">
           <RotateCcw class="w-3 h-3" />
-          Always Run
+          始终执行
         </span>
         <span v-if="step.errors?.length" class="inline-flex items-center px-2 py-1 text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200 rounded-md">
-          {{ step.errors.length }} error{{ step.errors.length !== 1 ? 's' : '' }}
+          {{ step.errors.length }} 个错误
         </span>
       </div>
     </div>
