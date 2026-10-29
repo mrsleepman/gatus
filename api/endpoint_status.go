@@ -36,6 +36,9 @@ func EndpointStatuses(cfg *config.Config) fiber.Handler {
 			} else if endpointStatusesFromRemote != nil {
 				endpointStatuses = append(endpointStatuses, endpointStatusesFromRemote...)
 			}
+			for _, endpointStatus := range endpointStatuses {
+				setEndpointStatusURL(cfg, endpointStatus)
+			}
 			// Marshal endpoint statuses to JSON
 			data, err = json.Marshal(endpointStatuses)
 			if err != nil {
@@ -83,6 +86,17 @@ func getEndpointStatusesFromRemoteInstances(remoteConfig *remote.Config) ([]*end
 	return endpointStatusesFromAllRemotes, nil
 }
 
+func setEndpointStatusURL(cfg *config.Config, endpointStatus *endpoint.Status) {
+	if cfg == nil || endpointStatus == nil {
+		return
+	}
+	ep := cfg.GetEndpointByKey(endpointStatus.Key)
+	if ep == nil || (ep.UIConfig != nil && ep.UIConfig.HideURL) {
+		return
+	}
+	endpointStatus.URL = ep.URL
+}
+
 // EndpointStatus retrieves a single endpoint.Status by group and endpoint name
 func EndpointStatus(cfg *config.Config) fiber.Handler {
 	return func(c *fiber.Ctx) error {
@@ -104,6 +118,7 @@ func EndpointStatus(cfg *config.Config) fiber.Handler {
 			logr.Errorf("[api.EndpointStatus] Endpoint with key=%s not found", key)
 			return c.Status(404).SendString("not found")
 		}
+		setEndpointStatusURL(cfg, endpointStatus)
 		output, err := json.Marshal(endpointStatus)
 		if err != nil {
 			logr.Errorf("[api.EndpointStatus] Unable to marshal object to JSON: %s", err.Error())

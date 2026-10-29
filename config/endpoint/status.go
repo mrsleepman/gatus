@@ -14,6 +14,9 @@ type Status struct {
 	// Key of the Endpoint
 	Key string `json:"key"`
 
+	// URL is the configured monitoring address. It is filled in by the API and is not stored.
+	URL string `json:"url,omitempty"`
+
 	// Results is the list of endpoint evaluation results
 	Results []*Result `json:"results"`
 

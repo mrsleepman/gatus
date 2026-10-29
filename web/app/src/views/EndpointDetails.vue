@@ -11,10 +11,9 @@
           <div class="flex items-start justify-between">
             <div>
               <h1 class="text-4xl font-bold tracking-tight">{{ endpointStatus.name }}</h1>
-              <div class="flex items-center gap-3 text-muted-foreground mt-2">
-                <span v-if="endpointStatus.group">分组：{{ endpointStatus.group }}</span>
-                <span v-if="endpointStatus.group && hostname">•</span>
-                <span v-if="hostname">{{ hostname }}</span>
+              <div class="text-muted-foreground mt-2 space-y-1">
+                <div v-if="endpointStatus.group">分组：{{ endpointStatus.group }}</div>
+                <div v-if="address" class="break-all">{{ address }}</div>
               </div>
             </div>
             <StatusBadge :status="currentHealthStatus" />
@@ -241,8 +240,8 @@ const currentHealthStatus = computed(() => {
   return latestResult.value.success ? 'healthy' : 'unhealthy'
 })
 
-const hostname = computed(() => {
-  return latestResult.value?.hostname || null
+const address = computed(() => {
+  return endpointStatus.value?.url || latestResult.value?.hostname || null
 })
 
 const toggleShowAverageResponseTime = () => {
